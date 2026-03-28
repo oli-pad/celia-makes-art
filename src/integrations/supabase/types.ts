@@ -14,7 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      artworks: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          featured: boolean | null
+          height_cm: number | null
+          id: string
+          image_path: string
+          is_original_available: boolean | null
+          medium: Database["public"]["Enums"]["art_medium"]
+          original_price: number | null
+          print_available: boolean | null
+          print_price: number | null
+          series: string | null
+          theme: string
+          title: string
+          updated_at: string
+          width_cm: number | null
+          year_created: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          featured?: boolean | null
+          height_cm?: number | null
+          id?: string
+          image_path: string
+          is_original_available?: boolean | null
+          medium: Database["public"]["Enums"]["art_medium"]
+          original_price?: number | null
+          print_available?: boolean | null
+          print_price?: number | null
+          series?: string | null
+          theme: string
+          title: string
+          updated_at?: string
+          width_cm?: number | null
+          year_created?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          featured?: boolean | null
+          height_cm?: number | null
+          id?: string
+          image_path?: string
+          is_original_available?: boolean | null
+          medium?: Database["public"]["Enums"]["art_medium"]
+          original_price?: number | null
+          print_available?: boolean | null
+          print_price?: number | null
+          series?: string | null
+          theme?: string
+          title?: string
+          updated_at?: string
+          width_cm?: number | null
+          year_created?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +85,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      art_medium: "watercolour" | "palette_painting"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +212,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      art_medium: ["watercolour", "palette_painting"],
+    },
   },
 } as const
