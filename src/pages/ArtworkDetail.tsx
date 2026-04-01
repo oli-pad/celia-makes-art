@@ -16,6 +16,7 @@ const MEDIUM_LABELS: Record<string, string> = {
 
 export default function ArtworkDetail() {
   const { id } = useParams<{ id: string }>();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const { data: artwork, isLoading, error } = useQuery({
     queryKey: ["artwork", id],
