@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "react-router-dom";
 import { fetchArtwork, getImageUrl } from "@/lib/artworks";
+import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const MEDIUM_LABELS: Record<string, string> = {
   watercolour: "Watercolour",
@@ -13,6 +16,7 @@ const MEDIUM_LABELS: Record<string, string> = {
 
 export default function ArtworkDetail() {
   const { id } = useParams<{ id: string }>();
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   const { data: artwork, isLoading, error } = useQuery({
     queryKey: ["artwork", id],
@@ -113,8 +117,34 @@ export default function ArtworkDetail() {
                     <p className="font-display text-lg font-semibold text-foreground">
                       £{artwork.print_price}
                     </p>
-                    <Button size="sm" className="mt-2 rounded-full">
-                      Order Print
+                    <Button
+                      size="sm"
+                      className="mt-2 rounded-full"
+                      disabled={checkoutLoading}
+                      onClick={async () => {
+                        setCheckoutLoading(true);
+                        try {
+                          const { data, error } = await supabase.functions.invoke("create-checkout", {
+                            body: {
+                              artworkId: artwork.id,
+                              artworkTitle: artwork.title,
+                              printPrice: artwork.print_price,
+                              imageUrl: getImageUrl(artwork.image_path),
+                            },
+                          });
+                          if (error) throw error;
+                          if (data?.url) {
+                            window.open(data.url, "_blank");
+                          }
+                        } catch (e: any) {
+                          toast.error("Could not start checkout. Please try again.");
+                          console.error(e);
+                        } finally {
+                          setCheckoutLoading(false);
+                        }
+                      }}
+                    >
+                      {checkoutLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Order Print"}
                     </Button>
                   </div>
                 </div>
