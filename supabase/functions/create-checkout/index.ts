@@ -26,6 +26,8 @@ serve(async (req) => {
       apiVersion: "2025-08-27.basil",
     });
 
+    const origin = req.headers.get("origin") || "https://celiamakesart.co.uk";
+
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
@@ -41,8 +43,7 @@ serve(async (req) => {
           quantity: 1,
         },
       ],
-      const origin = req.headers.get("origin") || "https://celiamakesart.co.uk";
-
+      mode: "payment",
       success_url: `${origin}/order-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/artwork/${artworkId}`,
       metadata: {
