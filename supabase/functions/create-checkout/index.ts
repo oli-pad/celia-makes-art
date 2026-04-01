@@ -41,9 +41,10 @@ serve(async (req) => {
           quantity: 1,
         },
       ],
-      mode: "payment",
-      success_url: `${req.headers.get("origin")}/order-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.get("origin")}/artwork/${artworkId}`,
+      const origin = req.headers.get("origin") || "https://celiamakesart.co.uk";
+
+      success_url: `${origin}/order-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/artwork/${artworkId}`,
       metadata: {
         artwork_id: artworkId,
       },
