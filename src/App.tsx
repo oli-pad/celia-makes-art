@@ -9,6 +9,7 @@ import ArtworkDetail from "./pages/ArtworkDetail";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import OrderSuccess from "./pages/OrderSuccess";
 
 const queryClient = new QueryClient();
 
